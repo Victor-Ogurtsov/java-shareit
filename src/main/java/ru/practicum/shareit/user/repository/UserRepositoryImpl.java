@@ -11,7 +11,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User addUser(User user) {
-        Long newId = 1 + users.keySet().stream().mapToLong(value -> value).max().orElse(0);
+        Long newId = generateNewId();
         user.setId(newId);
         users.put(newId, user);
         return users.get(user.getId());
@@ -19,13 +19,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User updateUser(User user) {
+        User updatedUser = users.get(user.getId());
         if (user.getName() != null) {
-            users.get(user.getId()).setName(user.getName());
+            updatedUser.setName(user.getName());
         }
         if (user.getEmail() != null) {
-            users.get(user.getId()).setEmail(user.getEmail());
+            updatedUser.setEmail(user.getEmail());
         }
-        return users.get(user.getId());
+        return updatedUser;
     }
 
     @Override
@@ -44,5 +45,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteUser(Long userId) {
         users.remove(userId);
+    }
+
+    private Long generateNewId() {
+        return users.keySet().stream()
+                .mapToLong(value -> value).max().orElse(0) + 1;
+
     }
 }

@@ -15,7 +15,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public Item addItem(Item item) {
-        Long newId = 1 + items.keySet().stream().mapToLong(value -> value).max().orElse(0);
+        Long newId = generateNewId();
         item.setId(newId);
         items.put(newId, item);
         return items.get(newId);
@@ -33,7 +33,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         if (item.getAvailable() != null) {
             updatedItem.setAvailable(item.getAvailable());
         }
-        return items.get(item.getId());
+        return updatedItem;
     }
 
     @Override
@@ -55,5 +55,11 @@ public class ItemRepositoryImpl implements ItemRepository {
                         || item.getDescription().toLowerCase().contains(searchQuery.toLowerCase()))
                         && item.getAvailable().equals(true))
                 .toList();
+    }
+
+    private Long generateNewId() {
+        return items.keySet().stream()
+                .mapToLong(value -> value).max().orElse(0) + 1;
+
     }
 }

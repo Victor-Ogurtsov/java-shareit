@@ -34,10 +34,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto updateItem(Long userId, Long itemId, ItemDto itemDto) {
-        Item item = itemMapper.fromItemDto(itemDto);
-        if (!Objects.equals(userId, itemRepository.getItemById(itemId).getOwner().getId())) {
+        if (itemRepository.getItemById(itemId) == null) {
+            throw new NotFoundException("Не найдена вещь с itemId = " + itemId);
+        } else if (!Objects.equals(userId, itemRepository.getItemById(itemId).getOwner().getId())) {
             throw new NotFoundException("Пользователь с userId = " + userId + "не владелец вещи с itemId = " + itemId);
         }
+        Item item = itemMapper.fromItemDto(itemDto);
         item.setId(itemId);
         Item updatedItem = itemRepository.updateItem(item);
         return itemMapper.toItemDto(updatedItem);

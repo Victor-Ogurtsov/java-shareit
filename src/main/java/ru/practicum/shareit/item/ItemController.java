@@ -6,7 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.comment.Comment;
+import ru.practicum.shareit.item.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemWithBookingDatesDto;
+import ru.practicum.shareit.item.dto.ItemWithBookingDto;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
@@ -39,13 +43,13 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getItem(@RequestHeader("X-Sharer-User-Id") Long userId, @Positive @PathVariable Long itemId) {
+    public ItemWithBookingDto getItem(@RequestHeader("X-Sharer-User-Id") Long userId, @Positive @PathVariable Long itemId) {
         log.info("Запрос на получение вещи itemId = {}, у пользователя: {}", itemId, userId);
         return itemService.getItem(userId, itemId);
     }
 
     @GetMapping
-    public List<ItemDto> getItemListFromUser(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemWithBookingDatesDto> getItemListFromUser(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Запрос на получение списка вещей у пользователя: {}", userId);
         return itemService.getItemListFromUser(userId);
     }
@@ -55,5 +59,13 @@ public class ItemController {
                                              @RequestParam(name = "text") String searchQuery) {
         log.info("Запрос на получение списка вещей у пользователя: {} по ключевому запросу text = {}", userId, searchQuery);
         return itemService.getItemListBySearch(userId, searchQuery);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable Long itemId,
+                                 @Valid @RequestBody Comment comment) {
+        log.info("Запрос на добавление комментария пользователем" +
+                " с userId = {} к вещи с itemId = {} c текстом comment = {}", userId, itemId, comment);
+        return itemService.addComment(userId, itemId, comment);
     }
 }

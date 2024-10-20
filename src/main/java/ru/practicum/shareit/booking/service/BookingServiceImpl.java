@@ -97,14 +97,14 @@ public class BookingServiceImpl implements BookingService {
         return responseBookingDtoMapper.toResponseBookingDtoList(bookingList);
     }
 
-    void checkBookingId(Optional<Booking> optionalBooking, Long bookingId) {
+    private void checkBookingId(Optional<Booking> optionalBooking, Long bookingId) {
         if (optionalBooking.isEmpty()) {
             throw new NotFoundException("Не найден запрос на бронирование с bookingId = "
                     + bookingId);
         }
     }
 
-    List<BookingStatus> getBookingStatusList(String state) {
+    private List<BookingStatus> getBookingStatusList(String state) {
         List<BookingStatus> statusList = new ArrayList<>(List.of(BookingStatus.APPROVED, BookingStatus.WAITING,
                 BookingStatus.REJECTED, BookingStatus.CANCELED));
         if (state.equals("CURRENT") || state.equals("FUTURE")) {
@@ -121,7 +121,7 @@ public class BookingServiceImpl implements BookingService {
         return statusList;
     }
 
-    List<Booking> getFilteredBookingListByState(List<Booking> bookingList, String state) {
+    private List<Booking> getFilteredBookingListByState(List<Booking> bookingList, String state) {
         if (state.equals("CURRENT")) {
             bookingList = bookingList.stream().filter(booking -> LocalDateTime.now().isBefore(booking.getEnd())).toList();
         }

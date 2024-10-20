@@ -10,6 +10,8 @@ import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Validated
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
     public UserDto addUser(UserDto userDto) {
         User user = userMapper.fromUserDto(userDto);
         checkEmail(user.getEmail());
-        User addedUser = userRepository.addUser(user);
+        User addedUser = userRepository.save(user);
 
         return userMapper.toUserDto(addedUser);
     }
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.fromUserDto(userDto);
         user.setId(userId);
-        User updatedUser = userRepository.updateUser(user);
+        User updatedUser = userRepository.save(user);
 
         return userMapper.toUserDto(updatedUser);
     }
@@ -46,18 +48,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(Long userId) {
         checkUserById(userId);
-        User user = userRepository.getUserById(userId);
-        return userMapper.toUserDto(user);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new NotFoundException("Не найден пользователь с id = " + userId);
+        }
+        return userMapper.toUserDto(optionalUser.get());
     }
 
     @Override
     public void deleteUser(Long userId) {
         checkUserById(userId);
-        userRepository.deleteUser(userId);
+        userRepository.deleteById(userId);
     }
 
     public void checkEmail(String email) {
-        if (userRepository.getUserByEmail(email) != null) {
+        if (userRepository.findByEmail(email) != null) {
             throw new ValidationArgException("Пользователь с таким email уже зарегистрирован!");
         }
     }
@@ -69,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void checkUserById(Long id) {
-        if (userRepository.getUserById(id) == null) {
+        if (userRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Не найден пользователь с id = " + id);
         }
     }

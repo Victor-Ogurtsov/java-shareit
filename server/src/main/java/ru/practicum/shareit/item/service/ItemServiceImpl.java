@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingStartComparator;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Transactional(readOnly = true)
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class ItemServiceImpl implements ItemService {
     private final CommentDtoMapper commentDtoMapper;
     private final ItemRequestRepository itemRequestRepository;
 
+    @Transactional
     @Override
     public ItemDto addItem(Long userId, ItemDto itemDto) {
         userService.checkUserById(userId);
@@ -60,6 +63,7 @@ public class ItemServiceImpl implements ItemService {
         return itemMapper.toItemDto(addedItem);
     }
 
+    @Transactional
     @Override
     public ItemDto updateItem(Long userId, Long itemId, ItemDto itemDto) {
         Item itemFromRepository = getItemOrThrowNotFoundException(itemId);
@@ -126,6 +130,7 @@ public class ItemServiceImpl implements ItemService {
         return itemWithBookingDatesDtoList;
     }
 
+    @Transactional
     @Override
     public CommentDto addComment(Long userId, Long itemId, CommentDto commentDto) {
         List<Booking> bookingList = bookingRepository.getBookingListByBookerIdAndItemIdAndState(userId, itemId,

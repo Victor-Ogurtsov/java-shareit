@@ -17,6 +17,7 @@ import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -61,7 +62,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         List<ItemRequestDto> itemRequestDtoList = new ArrayList<>();
         for (ItemRequest itemRequest : itemRequestList) {
             Long id = itemRequest.getId();
-            List<Item> itemListByRequestId = itemList.stream().filter(item -> item.getRequest().getId() == id).toList();
+            List<Item> itemListByRequestId = itemList.stream().filter(item -> Objects.equals(item.getRequest().getId(), id)).toList();
             List<ItemForItemRequestDto> itemForItemRequestDtoList = itemForItemRequestMapper.toItemForItemRequestList(itemListByRequestId);
             ItemRequestDto itemRequestDto = itemRequestMapper.toItemRequestDto(itemRequest, itemForItemRequestDtoList);
             itemRequestDtoList.add(itemRequestDto);

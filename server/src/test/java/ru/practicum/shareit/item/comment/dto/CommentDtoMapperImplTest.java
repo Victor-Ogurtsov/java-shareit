@@ -2,15 +2,12 @@ package ru.practicum.shareit.item.comment.dto;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDto;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CommentDtoMapperImplTest {
 

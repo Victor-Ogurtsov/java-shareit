@@ -10,8 +10,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ItemMapperImplTest {
 
     ItemMapperImpl itemMapper =  new ItemMapperImpl();

@@ -13,7 +13,6 @@ public interface CommentDtoMapper {
     @Mapping(target = "authorName", source = "author.name")
     @Mapping(target = "itemDto", source = "item")
     CommentDto toCommentDto(Comment comment);
-    //private Item item; private ItemDto itemDto;
 
     Comment fromCommentDto(CommentDto commentDto);
 

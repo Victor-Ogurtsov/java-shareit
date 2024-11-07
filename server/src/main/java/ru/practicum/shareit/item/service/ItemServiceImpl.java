@@ -52,8 +52,8 @@ public class ItemServiceImpl implements ItemService {
         item.getOwner().setId(userId);
         if (itemDto.getRequestId() != null) {
             Long requestId = itemDto.getRequestId();
-            ItemRequest itemRequest = itemRequestRepository.findItemRequestById(requestId).
-                    orElseThrow(() -> new NotFoundException("Не найден запрос вещи с requestId = " + requestId));
+            ItemRequest itemRequest = itemRequestRepository.findItemRequestById(requestId)
+                    .orElseThrow(() -> new NotFoundException("Не найден запрос вещи с requestId = " + requestId));
             item.setRequest(itemRequest);
         }
         Item addedItem = itemRepository.save(item);

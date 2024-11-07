@@ -49,11 +49,11 @@ class BookingControllerTest {
     void addBooking_shouldReturnBooking() throws Exception {
         ResponseBookingDto responseBookingDto = getResponseBookingDto(1L);
 
-        when(bookingService.addBooking(any(), any())).
-                thenReturn(responseBookingDto);
+        when(bookingService.addBooking(any(), any()))
+                .thenReturn(responseBookingDto);
 
                 mockMvc.perform(post("/bookings")
-                                .header("X-Sharer-User-Id" , 1)
+                                .header("X-Sharer-User-Id", 1)
                         .content(objectMapper.writeValueAsString(new RequestBookingDto()))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +77,7 @@ class BookingControllerTest {
                 .thenReturn(responseBookingDto);
 
         mockMvc.perform(patch("/bookings/" + responseBookingDto.getId() + "?approved=true")
-                        .header("X-Sharer-User-Id" , 1)
+                        .header("X-Sharer-User-Id", 1)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -99,7 +99,7 @@ class BookingControllerTest {
                 .thenReturn(responseBookingDto);
 
         mockMvc.perform(get("/bookings/" + responseBookingDto.getId())
-                        .header("X-Sharer-User-Id" , 1)
+                        .header("X-Sharer-User-Id", 1)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -121,7 +121,7 @@ class BookingControllerTest {
                 .thenReturn(responseBookingDtoList);
 
         mockMvc.perform(get("/bookings")
-                        .header("X-Sharer-User-Id" , 1)
+                        .header("X-Sharer-User-Id", 1)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -139,7 +139,7 @@ class BookingControllerTest {
                 .thenReturn(responseBookingDtoList);
 
         mockMvc.perform(get("/bookings/owner")
-                        .header("X-Sharer-User-Id" , 1)
+                        .header("X-Sharer-User-Id", 1)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

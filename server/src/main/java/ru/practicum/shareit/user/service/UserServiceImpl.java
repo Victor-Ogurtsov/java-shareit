@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUser(Long userId) {
-        //checkUserById(userId); строчка дублирует проверку ниже
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
             throw new NotFoundException("Не найден пользователь с id = " + userId);

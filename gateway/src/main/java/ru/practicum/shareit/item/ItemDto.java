@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.UserDto;
 
 
@@ -25,6 +24,5 @@ public class ItemDto {
     @NotNull
     private Boolean available;
     private UserDto owner;
-    //private ItemRequest request;
     private String requestId;
 }
